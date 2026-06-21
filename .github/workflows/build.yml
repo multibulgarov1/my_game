@@ -1,0 +1,32 @@
+name: Build Pygame Game
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pygame pyinstaller
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile main.py
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: game
+          path: dist/
